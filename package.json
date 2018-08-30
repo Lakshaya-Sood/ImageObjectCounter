@@ -1,0 +1,26 @@
+{
+  "name": "new_project",
+  "version": "1.0.0",
+  "description": "some description",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel ./src/index.html",
+    "server": "node ./server/server.js"
+  },
+  "keywords": [
+    "parcel",
+    "react"
+  ],
+  "author": "none",
+  "dependencies": {
+    "@material-ui/core": "^3.0.1",
+    "axios": "^0.18.0",
+    "prop-types": "^15.6.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-dropzone": "^5.0.1"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.9.7"
+  }
+}
