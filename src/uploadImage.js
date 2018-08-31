@@ -1,16 +1,20 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
-import upImg from './upload.svg'
+import upImg from './upload.svg';
+import hand_icon from './hand_icon.svg';
 import DeafultButton from './DeafultButton';
 import Loading from './loading';
 import axios from 'axios';
-import {saveAs} from './FileSaver';
+
 class UploadImage extends React.Component {
   constructor() {
     super()
     this.state = {
                file: {},
-               loading: false 
+               loading: false,
+               checkImageStatus: false,
+               afterUpload: false,
+               dropDisabled: false
               }
     this.onClick = this.onClick.bind(this)
   }
@@ -25,37 +29,45 @@ class UploadImage extends React.Component {
   }
 
   onClick(){
-    this.setState({loading:true})
-    let {file} = this.state
+    this.setState({loading:true,dropDisabled:true})
+    let self = this;
+    let { file } = this.state
     axios({
       method: 'get',
-      url: file.preview,
+      url: file.preview, 
       responseType: 'blob'
-    }).then((response)=>{
-      saveAs(response, './image.jpeg')
-    }).catch((err)=>{
-      console.log(err)
-    })
-    // axios({
-    //   method: 'post',
-    //   url: 'https://localhost:5000/serverLiveCheck',
-    //   data: {
-    //     preview: file.preview
-    //   }
-    // }).then((response) => {
-    //   console.log(response.data);
-    // }).catch((err)=>{
-    //   console.log(err)
-    // })
+      }).then((response) => {
+          var reader = new FileReader();
+          reader.readAsDataURL(response.data);
+          reader.onloadend = function() {
+              let base64data = reader.result,
+                string64 = base64data.split(',')[1]
+              axios({
+                method: 'post',
+                url:'http://localhost:5000/serverLiveCheck',
+                data: { image: string64, name: file.name }
+              }).then((response)=>{
+                self.setState({afterUpload:true,checkImageStatus:true})
+              }).catch((err)=>{
+                self.setState({afterUpload:true,checkImageStatus:false})
+                console.log(err)
+              })
+          }  
+              
+          })
+        .catch((err)=>{
+          console.log(err)
+        })
+  
   }
 
   render() {
-    console.log(this.state.file)
-    let  { file, loading } =  this.state
+    let  { file, loading, afterUpload, checkImageStatus, dropDisabled } =  this.state
     return (
       <section>
         <div className="dropzone">
           <Dropzone onDrop={this.onDrop.bind(this)} 
+              disabled={dropDisabled}
               style={{
                 position: 'relative',
                 textAlign: 'center',
@@ -63,14 +75,15 @@ class UploadImage extends React.Component {
                 width: '40%',
                 height: '200px',
                 borderWidth: '2px',
-                borderColor: 'rgb(102, 102, 102)',
+                borderColor: dropDisabled ? 'grey' :'rgb(102, 102, 102)',
+                color: dropDisabled ? 'grey' :'black',
                 borderStyle: 'dashed',
                 borderRadius: '5px'
               }}
           >
-              <h2>Click or drag file to this area for upload</h2>
+              <h2>Click or drag image to this area for upload</h2>
               <br/>
-              <img src={upImg} alt="Upload Image" style={{width:'100px',height:'100px'}}/>
+              <img src={dropDisabled ?hand_icon:upImg} alt="Upload Image" style={{width:'100px',height:'100px'}}/>
           </Dropzone>
         </div>
         <br/><br/>
@@ -80,9 +93,10 @@ class UploadImage extends React.Component {
               <p style={{fontSize:'20px'}}>Dropped file: {file.name} - {file.size} bytes</p>
               <img src={file.preview} alt={file.name} style={{border:'1px solid black',width:"20%"}}/>
               <br/>
-            { !loading ?(<DeafultButton onClick={this.onClick} />) :(<Loading ><p><br/>Be Patient! <br/>We Are checking</p></Loading>)}
+            { afterUpload?(checkImageStatus?<p>Success!</p>:<p>Failure!</p>):
+              !loading ?(<DeafultButton onClick={this.onClick} />) :(<Loading ><p><br/>Be Patient! <br/>We Are checking</p></Loading>)}
               </div>):
-            (<p style={{fontSize:'20px'}}>Dropped file: None </p>)}  
+            (<p style={{fontSize:'20px'}}>Dropped file: None </p>)} 
         </aside>
       </section>
     );

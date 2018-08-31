@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from PIL import Image
+
+import shutil
 import logging
-import urllib
+import base64
+
 #setting log level to debug
 logging.basicConfig(level=logging.DEBUG)
 
@@ -19,18 +21,14 @@ CORS(app)
 #1
 @app.route("/serverLiveCheck", methods=['POST'])
 def serverLiveCheck():
-    fileUrl = request.json['preview']
-    urllib.urlretrieve(fileUrl, "local-filename.jpg")
-    print fileInfo
-    response = app.response_class(
-        response='Session Successfully Cleared!',
-        status=200,
-        mimetype='text/plain'
-    )
-    return response
+    image =request.json['image']
+    name =request.json['name']
+    with open(name, 'wb') as f:
+        f.write(base64.b64decode(image))
+    return '',200
 #----------------Routes END----------------------    
 
 
 if __name__ == "__main__":
-    app.run( debug=True, use_reloader=False )
+    app.run( debug=True, use_reloader=False,threaded=True )
     
