@@ -1,0 +1,26 @@
+<annotation>
+	<folder>haldiram lite chiwda</folder>
+	<filename>frame104.jpg</filename>
+	<path>C:\Users\lakshaya.sood\Downloads\opencv\haldiram lite chiwda\frame104.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>3840</width>
+		<height>2160</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>liteChiwda</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>899</xmin>
+			<ymin>505</ymin>
+			<xmax>2768</xmax>
+			<ymax>2132</ymax>
+		</bndbox>
+	</object>
+</annotation>

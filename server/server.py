@@ -1,10 +1,12 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-
+from insights import getInsightsOnImage, imageCheckTollBooth
+import os
 import shutil
 import logging
 import base64
-
+import json
+#import asyncio  
 #setting log level to debug
 logging.basicConfig(level=logging.DEBUG)
 
@@ -23,9 +25,16 @@ CORS(app)
 def serverLiveCheck():
     image =request.json['image']
     name =request.json['name']
-    with open(name, 'wb') as f:
+    ImagePath = os.path.join('ToBeDetected',name)
+    with open(ImagePath, 'wb') as f:
         f.write(base64.b64decode(image))
-    return '',200
+
+    imageCheckTollBooth(ImagePath)
+
+    foundList = getInsightsOnImage(ImagePath)
+    x =json.dumps(foundList, separators=(',',':'))
+    print type(x)
+    return x,200
 #----------------Routes END----------------------    
 
 

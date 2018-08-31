@@ -14,15 +14,39 @@ class UploadImage extends React.Component {
                loading: false,
                checkImageStatus: false,
                afterUpload: false,
-               dropDisabled: false
+               dropDisabled: false,
+               result:false,
+               response:[]
               }
     this.onClick = this.onClick.bind(this)
+    this.reset = this.reset.bind(this)
+    this.clearBlobUrl = this.clearBlobUrl.bind(this)
   }
 
-  onDrop(file) {
+  clearBlobUrl(){
     if(Object.keys(this.state.file).length > 0){
       window.URL.revokeObjectURL(this.state.file.preview);
     }
+  }
+  componentWillUnmount(){
+    this.clearBlobUrl();
+  }
+
+  reset(){
+    this.clearBlobUrl();
+    this.setState({
+      file: {},
+      loading: false,
+      checkImageStatus: false,
+      afterUpload: false,
+      dropDisabled: false,
+      result:false,
+      response:[]
+     })
+  }
+
+  onDrop(file) {
+    this.clearBlobUrl();
     this.setState({
       file: file[0]
     });
@@ -47,7 +71,9 @@ class UploadImage extends React.Component {
                 url:'http://localhost:5000/serverLiveCheck',
                 data: { image: string64, name: file.name }
               }).then((response)=>{
-                self.setState({afterUpload:true,checkImageStatus:true})
+                console.log(response)
+                let temp = response.data.length>0?response.data:[{itemName:'None',count:0}]
+                self.setState({afterUpload:true,checkImageStatus:true,response:temp,result:true})
               }).catch((err)=>{
                 self.setState({afterUpload:true,checkImageStatus:false})
                 console.log(err)
@@ -58,11 +84,10 @@ class UploadImage extends React.Component {
         .catch((err)=>{
           console.log(err)
         })
-  
   }
 
   render() {
-    let  { file, loading, afterUpload, checkImageStatus, dropDisabled } =  this.state
+    let  { file, loading, afterUpload, checkImageStatus, dropDisabled, result, response } =  this.state
     return (
       <section>
         <div className="dropzone">
@@ -83,7 +108,7 @@ class UploadImage extends React.Component {
           >
               <h2>Click or drag image to this area for upload</h2>
               <br/>
-              <img src={dropDisabled ?hand_icon:upImg} alt="Upload Image" style={{width:'100px',height:'100px'}}/>
+              <img src={dropDisabled ? hand_icon : upImg} alt="Upload Image" style={{width:'100px',height:'100px'}}/>
           </Dropzone>
         </div>
         <br/><br/>
@@ -93,11 +118,26 @@ class UploadImage extends React.Component {
               <p style={{fontSize:'20px'}}>Dropped file: {file.name} - {file.size} bytes</p>
               <img src={file.preview} alt={file.name} style={{border:'1px solid black',width:"20%"}}/>
               <br/>
-            { afterUpload?(checkImageStatus?<p>Success!</p>:<p>Failure!</p>):
-              !loading ?(<DeafultButton onClick={this.onClick} />) :(<Loading ><p><br/>Be Patient! <br/>We Are checking</p></Loading>)}
+            { afterUpload ? (checkImageStatus?<p>Success!<DeafultButton onClick={this.reset} text={'Reset'}/></p>:<p>Failure!<DeafultButton onClick={this.reset} text={'Reset'}/></p>):
+              !loading ?(<DeafultButton onClick={this.onClick} text={'Check Image'}/>) :(<Loading ><p><br/>Be Patient! <br/>We Are checking</p></Loading>)}
               </div>):
             (<p style={{fontSize:'20px'}}>Dropped file: None </p>)} 
         </aside>
+        { result ? (<div style={{textAlign: 'center'}}> 
+          <h2>Result</h2>
+          <table style={{textAlign: 'center',border:'2px solid black'}}>
+            <tr>
+              <th>Product</th>
+              <th>Count</th>
+            </tr>
+            {response.map((item)=>{
+              return(<tr>
+                <td>{item.itemName}</td>
+                <td>{item.count}</td>
+              </tr>)
+            })}
+          </table>
+        </div>):<div></div>}
       </section>
     );
   }

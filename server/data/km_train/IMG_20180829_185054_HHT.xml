@@ -1,0 +1,26 @@
+<annotation>
+	<folder>km_test</folder>
+	<filename>IMG_20180829_185054_HHT.jpg</filename>
+	<path>C:\Users\lakshaya.sood\Downloads\opencv\data\km_test\IMG_20180829_185054_HHT.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>2000</width>
+		<height>4000</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>khataMeetha</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>84</xmin>
+			<ymin>1097</ymin>
+			<xmax>1984</xmax>
+			<ymax>3384</ymax>
+		</bndbox>
+	</object>
+</annotation>

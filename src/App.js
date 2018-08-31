@@ -31,6 +31,7 @@ class App extends React.Component {
     this.state ={
       value: 0,
     }
+    this.handleChange = this.handleChange.bind(this)
   }
 
   handleChange(event, value) {
