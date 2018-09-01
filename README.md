@@ -1,12 +1,13 @@
-# parcel-react
+# ImageObjectCounter
 
-[![Slack](https://slack-the-road-to-learn-react.wieruch.com/badge.svg)](https://slack-the-road-to-learn-react.wieruch.com/)
+At client (Reactjs)
+1. run npm i
+2. run npm start
+3. open browser go to localhost:1234
 
-A minimal React.js boilerplate with [parcel as bundler](https://github.com/parcel-bundler/parcel). Parcel is an alternative web application bundler to Webpack. Read more about it: [Getting started with React and Parcel](https://www.robinwieruch.de/parcel-react-setup/).
+At server (Python 2.7 & pip 18.0)
+1. run pip install -r requirements.txt
+2. got server folder and run server.py
 
-## Installation
+All Set To Go!!
 
-* `git clone git@github.com:rwieruch/parcel-react.git`
-* `cd parcel-react`
-* `npm install`
-* `npm start`
