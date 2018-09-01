@@ -12,3 +12,19 @@ At server (Python 2.7 & pip 18.0)
 
 All Set To Go!!
 
+To Train (- refer Trainer folder)
+1. collect images of the item you want to train
+
+2. put images in "/Trainer/data/<item name>" (name the folder with with item name)
+  like: "/Trainer/data/Parle_G" or "/Trainer/data/Amul_milk"
+  
+3. annotate the images with help of  "labelImg.exe" to mark(draw rectangle around items) the images
+  *remember to select the PascalVOC as the save format
+  
+4. save the xml from labelImg in "/Trainer/data/<item name>" 
+  same directory as its images
+  
+5. run "scrapper.py"
+6. run "justTrain.py"
+7. move the item folders to "server/data"
+
