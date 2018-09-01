@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from insights import getInsightsOnImage, imageCheckTollBooth
 import os
-import shutil
 import logging
 import base64
 import json
