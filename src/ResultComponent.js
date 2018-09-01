@@ -8,14 +8,16 @@ import ResultTable from './ResultTable';
 
 
 function getModalStyle() {
-  const top = 30;
-  const left = 40
+  const top = 40;
+  const left = 45;
 
   return {
     top: `${top}%`,
     left: `${left}%`,
     transform: `translate(-${top}%, -${left}%)`,
-    width: '45%'
+    width: '45%',
+    textAlign: 'center',
+    height: '60%'
   };
 }
 
@@ -50,7 +52,7 @@ class ResultComponent extends React.Component {
     };
 
     render() {
-        const { classes, items } = this.props;
+        const { classes, items,resultImage } = this.props;
 
         return (
         <div>
@@ -61,9 +63,8 @@ class ResultComponent extends React.Component {
             onClose={this.handleClose}
             >
             <div style={getModalStyle()} className={classes.paper}>
-                <Typography variant="title" id="modal-title">
-                Result
-                </Typography>
+                <img src={resultImage} alt="Result Image" style={{width:'70%'}}/>
+                <br/>
                 <ResultTable items={items}/>
             </div>
             </Modal>

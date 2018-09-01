@@ -17,7 +17,8 @@ class UploadImage extends React.Component {
                afterUpload: false,
                dropDisabled: false,
                result:false,
-               response:[]
+               response:[],
+               resultImage: ''
               }
     this.onClick = this.onClick.bind(this)
     this.reset = this.reset.bind(this)
@@ -42,7 +43,8 @@ class UploadImage extends React.Component {
       afterUpload: false,
       dropDisabled: false,
       result:false,
-      response:[]
+      response:[],
+      resultImage: ''
      })
   }
 
@@ -73,8 +75,9 @@ class UploadImage extends React.Component {
                 data: { image: string64, name: file.name }
               }).then((response)=>{
                 console.log(response)
-                let temp = response.data.length>0?response.data:[{itemName:'None',count:0}]
-                self.setState({afterUpload:true,checkImageStatus:true,response:temp,result:true})
+                let temp = response.data.resultData.length>0?response.data.resultData:[{itemName:'None',count:0}],
+                  img64link = 'data:image/'+response.data.ext+';base64,'+response.data.base64Str;
+                self.setState({afterUpload:true,checkImageStatus:true,response:temp,result:true,resultImage:img64link})
               }).catch((err)=>{
                 self.setState({afterUpload:true,checkImageStatus:false})
                 console.log(err)
@@ -88,7 +91,7 @@ class UploadImage extends React.Component {
   }
 
   render() {
-    let  { file, loading, afterUpload, checkImageStatus, dropDisabled, result, response } =  this.state
+    let  { file, loading, afterUpload, checkImageStatus, dropDisabled, result, response, resultImage } =  this.state
     return (
       <div>
         <div className="dropzone">
@@ -124,7 +127,7 @@ class UploadImage extends React.Component {
               </div>):
             (<p style={{fontSize:'20px'}}>Dropped file: None </p>)} 
         </div>
-        <ResultComponent open={result} items={response}/>
+        <ResultComponent open={result} items={response} resultImage={resultImage}/>
       </div>
     );
   }

@@ -6,6 +6,7 @@ import shutil
 import logging
 import base64
 import json
+import cv2
 #import asyncio  
 #setting log level to debug
 logging.basicConfig(level=logging.DEBUG)
@@ -32,8 +33,15 @@ def serverLiveCheck():
     imageCheckTollBooth(ImagePath)
 
     foundList = getInsightsOnImage(ImagePath)
-    x =json.dumps(foundList, separators=(',',':'))
+    
+    img = cv2.imread(ImagePath)
+    ext = '.' + name.split('.')[1]
+    base64Str = cv2.imencode(ext, img)[1].tostring()
+    resp = {'resultData':foundList,'base64Str':base64Str.encode('base64'),'ext':ext}
+    print type(resp)
+    x =json.dumps(resp)
     print type(x)
+    os.remove(ImagePath)
     return x,200
 #----------------Routes END----------------------    
 
