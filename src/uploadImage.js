@@ -5,6 +5,7 @@ import hand_icon from './hand_icon.svg';
 import DeafultButton from './DeafultButton';
 import Loading from './loading';
 import axios from 'axios';
+import ResultComponent from './ResultComponent';
 
 class UploadImage extends React.Component {
   constructor() {
@@ -89,7 +90,7 @@ class UploadImage extends React.Component {
   render() {
     let  { file, loading, afterUpload, checkImageStatus, dropDisabled, result, response } =  this.state
     return (
-      <section>
+      <div>
         <div className="dropzone">
           <Dropzone onDrop={this.onDrop.bind(this)} 
               disabled={dropDisabled}
@@ -112,7 +113,7 @@ class UploadImage extends React.Component {
           </Dropzone>
         </div>
         <br/><br/>
-        <aside style={{textAlign: 'center'}}>
+        <div style={{textAlign: 'center'}}>
           { Object.keys(file).length>0 ? 
             (<div>
               <p style={{fontSize:'20px'}}>Dropped file: {file.name} - {file.size} bytes</p>
@@ -122,23 +123,9 @@ class UploadImage extends React.Component {
               !loading ?(<DeafultButton onClick={this.onClick} text={'Check Image'}/>) :(<Loading ><p><br/>Be Patient! <br/>We Are checking</p></Loading>)}
               </div>):
             (<p style={{fontSize:'20px'}}>Dropped file: None </p>)} 
-        </aside>
-        { result ? (<div style={{textAlign: 'center'}}> 
-          <h2>Result</h2>
-          <table style={{textAlign: 'center',border:'2px solid black'}}>
-            <tr>
-              <th>Product</th>
-              <th>Count</th>
-            </tr>
-            {response.map((item)=>{
-              return(<tr>
-                <td>{item.itemName}</td>
-                <td>{item.count}</td>
-              </tr>)
-            })}
-          </table>
-        </div>):<div></div>}
-      </section>
+        </div>
+        <ResultComponent open={result} items={response}/>
+      </div>
     );
   }
 }
