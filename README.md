@@ -1,5 +1,7 @@
 # ImageObjectCounter
 
+upload image of articles and detect count in them based on trained model
+
 At client (Reactjs)
 1. run "npm i"
 2. run "npm start"
@@ -16,12 +18,15 @@ To Train (- refer Trainer folder)
 1. collect images of the item you want to train
 
 2. put images in "/Trainer/data/<item name>" (name the folder with with item name)
+  
   like: "/Trainer/data/Parle_G" or "/Trainer/data/Amul_milk"
   
 3. annotate the images with help of  "labelImg.exe" to mark(draw rectangle around items) the images
+
   *remember to select the PascalVOC as the save format
   
 4. save the xml from labelImg in "/Trainer/data/<item name>" 
+  
   same directory as its images
   
 5. run "scrapper.py"
